@@ -4,18 +4,18 @@ import java.util.*;
 
 public class Cards {
 
+	// Single Round
     private static int[] singleRound(Deque<Integer> deck) {
 	    int[] afterRound = new int[deck.size()];
 	    int j = 0;
 	    Iterator iterator = deck.iterator(); 
 	    while (iterator.hasNext()){
-	    	int element1 = deck.pollLast();
-	    	System.out.println(element1);
-	    	afterRound[j] = element1;
+	    	int lastElement = deck.pollLast();
+	    	afterRound[j] = lastElement;
 	    	j++;
 	    	if (iterator.hasNext()){
-	    		int element2 = deck.pollLast();
-	    		deck.addFirst(element2);
+	    		lastElement = deck.pollLast();
+	    		deck.addFirst(lastElement);
 	    	}
 	    }
 	    for (int i = 0; i < afterRound.length/2; i++){
@@ -39,6 +39,7 @@ public class Cards {
 		return group;
 	}
 
+	// Compute LCM in a array
 	private static int computeLCM(int[] deck) {
 		int length = deck.length;
 		int product = 1;
@@ -49,6 +50,7 @@ public class Cards {
 		return product;
 	}
 
+	// Compute GCD
 	private static int computeGCD(int a, int b){
 	    if (b == 0) {
 	        return a;
@@ -58,12 +60,13 @@ public class Cards {
 	}
 
 	public static void main(String[] args) {
-	 	int count = 4;
-	 	Deque<Integer> deque = new LinkedList<Integer>(); 
+	 	int count = 52;
+	 	Deque<Integer> deck = new LinkedList<Integer>(); 
 	 	for ( int i = 0 ; i < count ; i++ ){
-	 		deque.addLast(i);
+	 		deck.addFirst(i);
 	 	}
-	 	int[] afterRound = singleRound(deque);
-	 	System.out.println(computeLCM(cycles(afterRound)));
+	 	int[] afterRound = singleRound(deck);
+	 	int[] cycle = cycles(afterRound);
+	 	System.out.println("Number of rounds required is"  + computeLCM(cycle));
 	}
 }

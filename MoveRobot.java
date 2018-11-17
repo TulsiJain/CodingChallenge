@@ -7,20 +7,20 @@ public class MoveRobot {
     private static String[] MoveRobot(int[] rightMostPosition, String robotFist, String robotFistCommand, String robotSecond, String robotSecondCommand) {
     	StringBuilder firstCurrentPosition = new StringBuilder(robotFist);
         for (int i = 0; i < robotFistCommand.length(); i++){
-        	char current = robotFistCommand.charAt(i);
-        	if (current == 'L' || current == 'R'){
-        		helperFunction(firstCurrentPosition, current);
-        	}else if (current == 'M'){
+        	char command = robotFistCommand.charAt(i);
+        	if (command == 'L' || command == 'R'){
+        		spinning(firstCurrentPosition, command);
+        	}else if (command == 'M'){
         		move(firstCurrentPosition);
         	}
         }
 
         StringBuilder secondCurrentPosition = new StringBuilder(robotSecond);
         for (int i = 0; i < robotSecondCommand.length(); i++){
-        	char current = robotSecondCommand.charAt(i);
-        	if (current == 'L' || current == 'R'){
-        		helperFunction(secondCurrentPosition, current);
-        	}else if (current == 'M'){
+        	char command = robotSecondCommand.charAt(i);
+        	if (command == 'L' || command == 'R'){
+        		spinning(secondCurrentPosition, command);
+        	}else if (command == 'M'){
         		move(secondCurrentPosition);
         	}
         }
@@ -28,7 +28,7 @@ public class MoveRobot {
         return output;
     }
 
-    private static void helperFunction(StringBuilder currentPosition, char instruction){
+    private static void spinning(StringBuilder currentPosition, char instruction){
     	int length = currentPosition.length();
     	if (instruction == 'R'){
     		if (currentPosition.charAt(length -1) == 'N'){

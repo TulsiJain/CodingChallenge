@@ -9,8 +9,10 @@ import java.util.*;
 
 public class GSyslogFile {
 
-    private static LinkedHashMap<String, Integer> GSyslogFile(String fileName) {
+    private static LinkedHashMap<String, Integer> urlCount(String fileName) {
         File f = new File(fileName);
+        // LinkedHashMap to maintain a order
+        // Reading data a file
         LinkedHashMap<String, Integer> h = new LinkedHashMap<String, Integer>();
         BufferedReader br = null;
         FileReader fr = null;
@@ -19,22 +21,23 @@ public class GSyslogFile {
             br = new BufferedReader(fr);
             String st;
             while ((st = br.readLine()) != null) {
-                if (st.contains("api")){
-                    int cmdBeginning  = st.indexOf('"') + 1;
-                    String leftOverString1 = st.substring(cmdBeginning);
+                // if (st.contains("api")){
+                    int firstCommaIndex  = st.indexOf('"') + 1;
+                    String leftOverString1 = st.substring(firstCommaIndex);
                     int startingIndex  = leftOverString1.indexOf(' ') + 1;
                     String leftOverString2 = leftOverString1.substring(startingIndex);
                     int endIndex  = leftOverString2.indexOf(' ');
-                    String url = st.substring(cmdBeginning + startingIndex, cmdBeginning + startingIndex + endIndex);
+                    String url = st.substring(firstCommaIndex + startingIndex, firstCommaIndex + startingIndex + endIndex);
                     if(h.containsKey(url)){
                         int value = h.get(url) + 1;
                         h.put(url, value);
                     } else {
                         h.put(url, 1);
                     }
-                }
+                // }
             }
         }catch (IOException e) {
+            // IOException whenever an input or output operation is failed
             System.out.println("IOException Exception Occurced");
             e.printStackTrace();
         }
@@ -52,16 +55,16 @@ public class GSyslogFile {
             String st;
             while ((st = br.readLine()) != null) {
                 if (st.contains("api")){
-                    int cmdBeginning  = st.indexOf('"') + 1;
-                    String leftOverString1 = st.substring(cmdBeginning);
+                    int firstCommaIndex  = st.indexOf('"') + 1;
+                    String leftOverString1 = st.substring(firstCommaIndex);
                     int startingIndex  = leftOverString1.indexOf(' ') + 1;
                     String leftOverString2 = leftOverString1.substring(startingIndex);
                     int endIndex  = leftOverString2.indexOf(' ');
-                    String url = st.substring(cmdBeginning + startingIndex, cmdBeginning + startingIndex + endIndex);
+                    String url = st.substring(firstCommaIndex + startingIndex, firstCommaIndex + startingIndex + endIndex);
                     int statusCodeStarting = leftOverString1.indexOf('"') + 2;
                     String leftOverString3 = leftOverString1.substring(statusCodeStarting);
                     int statusCodeEnd  = leftOverString3.indexOf(' ');
-                    String status  = st.substring(cmdBeginning + statusCodeStarting, statusCodeEnd + cmdBeginning + statusCodeStarting);
+                    String status  = st.substring(firstCommaIndex + statusCodeStarting, statusCodeEnd + firstCommaIndex + statusCodeStarting);
                     if(h.containsKey(url)){
                         List<StatusCount> statusList = h.get(url);
                         for ( int i = 0 ; i < statusList.size() ; i++ ){
@@ -80,6 +83,7 @@ public class GSyslogFile {
                 }
             }
         }catch (IOException e) {
+            // IOException whenever an input or output operation is failed
             System.out.println("IOException Exception Occurced");
             e.printStackTrace();
         }
@@ -87,13 +91,14 @@ public class GSyslogFile {
     }
 
     public static void main(String[] args) {
-        String input = "input";
-        LinkedHashMap<String, Integer> urlCount = GSyslogFile(input);
+        String fileName = "input";
+        LinkedHashMap<String, Integer> urlCount = urlCount(fileName);
         for (Map.Entry<String, Integer>  entry : urlCount.entrySet()){
             System.out.println(entry.getKey() + " " + entry.getValue());
         }
+        System.out.println();
         System.out.println("Status Counting");
-        LinkedHashMap<String, List<StatusCount>> statusCount = statusCount(input);
+        LinkedHashMap<String, List<StatusCount>> statusCount = statusCount(fileName);
         for (Map.Entry<String, List<StatusCount>>  entry : statusCount.entrySet()){
             String key = entry.getKey();
             System.out.println(key);

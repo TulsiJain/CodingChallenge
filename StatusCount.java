@@ -1,4 +1,11 @@
 
+
+/**
+ * Filename:   StatusCount.java
+ * Project:    Coding Challenge
+ * Authors:    Tulsi Jain
+ */
+
 public class StatusCount {
 	String status;
 	int count = 0;

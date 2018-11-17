@@ -7,8 +7,15 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.*;
 
+/**
+ * Filename:   GSyslogFile.java
+ * Project:    Coding Challenge
+ * Authors:    Tulsi Jain
+ */
+
 public class GSyslogFile {
 
+    // For counting of URLs
     private static LinkedHashMap<String, Integer> urlCount(String fileName) {
         File f = new File(fileName);
         // LinkedHashMap to maintain a order
@@ -22,18 +29,18 @@ public class GSyslogFile {
             String st;
             while ((st = br.readLine()) != null) {
                 // if (st.contains("api")){
-                    int firstCommaIndex  = st.indexOf('"') + 1;
-                    String leftOverString1 = st.substring(firstCommaIndex);
-                    int startingIndex  = leftOverString1.indexOf(' ') + 1;
-                    String leftOverString2 = leftOverString1.substring(startingIndex);
-                    int endIndex  = leftOverString2.indexOf(' ');
-                    String url = st.substring(firstCommaIndex + startingIndex, firstCommaIndex + startingIndex + endIndex);
-                    if(h.containsKey(url)){
-                        int value = h.get(url) + 1;
-                        h.put(url, value);
-                    } else {
-                        h.put(url, 1);
-                    }
+                int firstCommaIndex  = st.indexOf('"') + 1;
+                String leftOverString1 = st.substring(firstCommaIndex);
+                int startingIndex  = leftOverString1.indexOf(' ') + 1;
+                String leftOverString2 = leftOverString1.substring(startingIndex);
+                int endIndex  = leftOverString2.indexOf(' ');
+                String url = st.substring(firstCommaIndex + startingIndex, firstCommaIndex + startingIndex + endIndex);
+                if(h.containsKey(url)){
+                    int value = h.get(url) + 1;
+                    h.put(url, value);
+                } else {
+                    h.put(url, 1);
+                }
                 // }
             }
         }catch (IOException e) {
@@ -44,6 +51,7 @@ public class GSyslogFile {
         return h;
     }
 
+    // For count of status for all URLs
     private static LinkedHashMap<String, List<StatusCount>> statusCount(String fileName) {
         File f = new File(fileName);
         LinkedHashMap<String, List<StatusCount>> h = new LinkedHashMap<String, List<StatusCount>>();

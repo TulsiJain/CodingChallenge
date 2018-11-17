@@ -4,30 +4,32 @@ import java.util.*;
 
 public class Cards {
 
-    private static int[] singleRound(Stack<Integer> deck) {
-	    int[] newList = new int[deck.size()];
+    private static int[] singleRound(Deque<Integer> deck) {
+	    int[] afterRound = new int[deck.size()];
 	    int j = 0;
-	    while (!deck.empty()){
-	    	int element1 = deck.pop();
-	    	newList[j] = element1;
+	    Iterator iterator = deck.iterator(); 
+	    while (iterator.hasNext()){
+	    	int element1 = deck.pollLast();
+	    	System.out.println(element1);
+	    	afterRound[j] = element1;
 	    	j++;
-	    	if (!deck.empty()){
-	    		int element2 = deck.pop();
-	    		deck.push(element2);
+	    	if (iterator.hasNext()){
+	    		int element2 = deck.pollLast();
+	    		deck.addFirst(element2);
 	    	}
 	    }
-	    for (int i = 0; i < newList.length/2; i++){
-	    	int temp = newList[i];
-	    	newList[i] = newList[newList.length -i -1];
-	    	newList[newList.length -i -1] = temp;
+	    for (int i = 0; i < afterRound.length/2; i++){
+	    	int temp = afterRound[i];
+	    	afterRound[i] = afterRound[afterRound.length -i -1];
+	    	afterRound[afterRound.length -i -1] = temp;
 	    }
-	    return newList;
+	    return afterRound;
 	}
 
 	private static int[] cycles(int[] deck) {
 		int[] group = new int[deck.length];
 		Arrays.fill(group, 1);
-		for ( int i =0; i < deck.length; i++ ){
+		for ( int i = 0; i < deck.length; i++){
 			int index = i;
 			while (deck[index] != i){
 				index = deck[index];
@@ -47,7 +49,7 @@ public class Cards {
 		return product;
 	}
 
-	private static int computeGCD( int a, int b ){
+	private static int computeGCD(int a, int b){
 	    if (b == 0) {
 	        return a;
 	    }else{
@@ -56,11 +58,12 @@ public class Cards {
 	}
 
 	public static void main(String[] args) {
-	 	int count = 5;
-	 	Stack<Integer> initialStack = new Stack<Integer>();
+	 	int count = 4;
+	 	Deque<Integer> deque = new LinkedList<Integer>(); 
 	 	for ( int i = 0 ; i < count ; i++ ){
-	 		initialStack.add(i);
+	 		deque.addLast(i);
 	 	}
-	 	System.out.println(computeLCM(cycles(singleRound(initialStack))));
+	 	int[] afterRound = singleRound(deque);
+	 	System.out.println(computeLCM(cycles(afterRound)));
 	}
 }
